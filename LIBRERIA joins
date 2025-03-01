@@ -1,0 +1,133 @@
+mysql> SELECT * from BOOKS inner join AUTHORS on AUTHORS.ID = BOOKS.AUTHORID;
++----+--------+-------+------------+----------+----+----------+
+| ID | NAME   | PRICE | CATEGORYID | AUTHORID | ID | NAME     |
++----+--------+-------+------------+----------+----+----------+
+|  4 | Book-D |   100 |          7 |        1 |  1 | Author-A |
+|  5 | Book-E |   200 |          8 |        1 |  1 | Author-A |
+|  6 | Book-F |   150 |          4 |        1 |  1 | Author-A |
+|  1 | Book-A |   100 |          1 |        2 |  2 | Author-B |
+|  2 | Book-B |   200 |          2 |        2 |  2 | Author-B |
+|  3 | Book-C |   150 |          3 |        2 |  2 | Author-B |
+|  7 | Book-G |   100 |         10 |        3 |  3 | Author-C |
+|  8 | Book-H |   200 |         12 |       10 | 10 | Author-D |
+|  9 | Book-I |   150 |          6 |       12 | 12 | Author-E |
++----+--------+-------+------------+----------+----+----------+
+9 rows in set (0.00 sec)
+mysql> SELECT * from BOOKS left outer join AUTHORS on AUTHORS.ID = BOOKS.AUTHORID;
++----+--------+-------+------------+----------+------+----------+
+| ID | NAME   | PRICE | CATEGORYID | AUTHORID | ID   | NAME     |
++----+--------+-------+------------+----------+------+----------+
+|  1 | Book-A |   100 |          1 |        2 |    2 | Author-B |
+|  2 | Book-B |   200 |          2 |        2 |    2 | Author-B |
+|  3 | Book-C |   150 |          3 |        2 |    2 | Author-B |
+|  4 | Book-D |   100 |          7 |        1 |    1 | Author-A |
+|  5 | Book-E |   200 |          8 |        1 |    1 | Author-A |
+|  6 | Book-F |   150 |          4 |        1 |    1 | Author-A |
+|  7 | Book-G |   100 |         10 |        3 |    3 | Author-C |
+|  8 | Book-H |   200 |         12 |       10 |   10 | Author-D |
+|  9 | Book-I |   150 |          6 |       12 |   12 | Author-E |
++----+--------+-------+------------+----------+------+----------+
+9 rows in set (0.00 sec)
+mysql> SELECT * from BOOKS right outer join AUTHORS on AUTHORS.ID = BOOKS.AUTHORID;
++------+--------+-------+------------+----------+----+----------+
+| ID   | NAME   | PRICE | CATEGORYID | AUTHORID | ID | NAME     |
++------+--------+-------+------------+----------+----+----------+
+|    4 | Book-D |   100 |          7 |        1 |  1 | Author-A |
+|    5 | Book-E |   200 |          8 |        1 |  1 | Author-A |
+|    6 | Book-F |   150 |          4 |        1 |  1 | Author-A |
+|    1 | Book-A |   100 |          1 |        2 |  2 | Author-B |
+|    2 | Book-B |   200 |          2 |        2 |  2 | Author-B |
+|    3 | Book-C |   150 |          3 |        2 |  2 | Author-B |
+|    7 | Book-G |   100 |         10 |        3 |  3 | Author-C |
+|    8 | Book-H |   200 |         12 |       10 | 10 | Author-D |
+|    9 | Book-I |   150 |          6 |       12 | 12 | Author-E |
++------+--------+-------+------------+----------+----+----------+
+9 rows in set (0.00 sec)
+
+mysql> SELECT * from BOOKS left outer join AUTHORS on AUTHORS.ID = BOOKS.AUTHORID
+    -> union all
+    -> SELECT * from AUTHORS right outer join BOOKS on AUTHORS.ID = BOOKS.AUTHORID;
++------+----------+-------+------------+----------+------+----------+
+| ID   | NAME     | PRICE | CATEGORYID | AUTHORID | ID   | NAME     |
++------+----------+-------+------------+----------+------+----------+
+|    1 | Book-A   |   100 | 1          |        2 |    2 | Author-B |
+|    2 | Book-B   |   200 | 2          |        2 |    2 | Author-B |
+|    3 | Book-C   |   150 | 3          |        2 |    2 | Author-B |
+|    4 | Book-D   |   100 | 7          |        1 |    1 | Author-A |
+|    5 | Book-E   |   200 | 8          |        1 |    1 | Author-A |
+|    6 | Book-F   |   150 | 4          |        1 |    1 | Author-A |
+|    7 | Book-G   |   100 | 10         |        3 |    3 | Author-C |
+|    8 | Book-H   |   200 | 12         |       10 |   10 | Author-D |
+|    9 | Book-I   |   150 | 6          |       12 |   12 | Author-E |
+|    2 | Author-B |     1 | Book-A     |      100 |    1 | 2        |
+|    2 | Author-B |     2 | Book-B     |      200 |    2 | 2        |
+|    2 | Author-B |     3 | Book-C     |      150 |    3 | 2        |
+|    1 | Author-A |     4 | Book-D     |      100 |    7 | 1        |
+|    1 | Author-A |     5 | Book-E     |      200 |    8 | 1        |
+|    1 | Author-A |     6 | Book-F     |      150 |    4 | 1        |
+|    3 | Author-C |     7 | Book-G     |      100 |   10 | 3        |
+|   10 | Author-D |     8 | Book-H     |      200 |   12 | 10       |
+|   12 | Author-E |     9 | Book-I     |      150 |    6 | 12       |
++------+----------+-------+------------+----------+------+----------+
+18 rows in set (0.00 sec)
+
+mysql> SELECT * from AUTHORS left join BOOKS on AUTHORS.ID = BOOKS.AUTHORID where BOOKS.AUTHORID IS NULL;
+Empty set (0.00 sec)
+
+mysql> SELECT * from AUTHORS right outer join BOOKS on AUTHORS.ID = BOOKS.AUTHORID where BOOKS.AUTHORID IS NULL;
+Empty set (0.00 sec)
+
+mysql> alter tableAlter table BOOKS ADD FOREIGN KEY (CATEGORYID)
+    -> References CATEGORIES (ID); 
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'tableAlter table BOOKS ADD FOREIGN KEY (CATEGORYID)
+References CATEGORIES (ID)' at line 1
+mysql> Alter table BOOKS ADD FOREIGN KEY (AUTHORID)
+    -> References AUTHORS (ID);Alter table BOOKS ADD FOREIGN KEY (CATEGORYID)
+Query OK, 9 rows affected (0.08 sec)
+Records: 9  Duplicates: 0  Warnings: 0
+
+    -> References CATEGORIES (ID); 
+Query OK, 9 rows affected (0.07 sec)
+Records: 9  Duplicates: 0  Warnings: 0
+
+mysql> Alter table BOOKS ADD FOREIGN KEY (AUTHORID)
+    -> References AUTHORS (ID);
+Query OK, 9 rows affected (0.06 sec)
+Records: 9  Duplicates: 0  Warnings: 0
+
+mysql> show tables;
++-----------------------------+
+| Tables_in_xdavidelx$default |
++-----------------------------+
+| AUTHORS                     |
+| BOOKS                       |
+| CATEGORIES                  |
+| detalle_horario             |
+| gamescores                  |
+| hockeygame                  |
+| hockeyteam                  |
+| hockeyteamplayer            |
+| horario                     |
+| plantilla_detalle_horario   |
+| playoffround                |
+| roundstats                  |
+| user                        |
+| userinfo                    |
+| userscorepicks              |
+| userstatspicks              |
+| usuarios                    |
++-----------------------------+
+17 rows in set (0.00 sec)
+
+mysql> desc BOOKS;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| ID         | int         | NO   | PRI | NULL    | auto_increment |
+| NAME       | varchar(50) | NO   |     | NULL    |                |
+| PRICE      | int         | YES  |     | NULL    |                |
+| CATEGORYID | int         | YES  | MUL | NULL    |                |
+| AUTHORID   | int         | YES  | MUL | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+mysql> 
