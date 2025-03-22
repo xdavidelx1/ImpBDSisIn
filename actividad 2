@@ -1,0 +1,47 @@
+--david lozano gutierrez 4;j)
+
+--ejercicio1
+CREATE TABLE articulosuno (
+    Artículo varchar(30)
+);
+
+CREATE TABLE articulosdos (
+    Articulo varchar(30)
+);
+
+INSERT INTO articulosuno ( Artículo ) VALUES
+	('Azucar'),
+    ('Pan'),
+    ('jugo'),
+    ('Refresco'),
+    ('Harina');
+
+INSERT INTO articulosdos ( Articulo ) VALUES
+	('Azucar'),
+    ('Pan'),
+    ('Mantequilla'),
+    ('Queso'),
+    ('Manzana');
+
+SELECT * from articulosuno left outer join articulosdos on articulosuno.Artículo = articulosdos.Articulo
+union 
+SELECT * from articulosuno right outer join articulosdos on articulosdos.Articulo = articulosuno.Artículo;
+
+ejercicio 3 
+CREATE TABLE ejercicio3 (
+    id_cliente INT,
+    id_orden INT,
+    estado_destino VARCHAR (30),
+    costo VARCHAR(10) 
+);
+
+
+INSERT INTO ejercicio3(id_cliente,id_orden,estado_destino,costo) VALUES 
+(1001, 1, 'JAL', '$987'),
+(1001, 2, 'CDMX', '$400'),
+(1001, 3, 'CDMX', '$545'),
+(1001, 4, 'CDMX', '$321'),
+(2002, 5, 'MTY', '$324'),
+(3003, 6, 'JAL', '$931'),
+(4004, 7, 'JAL', '$876'),
+(5005, 8, 'CDMX', '$567');
